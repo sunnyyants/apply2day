@@ -1,0 +1,38 @@
+//Created by Sunny on 8/1/14.
+
+extends ../layout
+block content
+    .container
+        .row
+            .col-lg-12
+                .page-header
+                    h1 Applied List
+            .col-lg-12
+                table.table.table-striped.table-hover
+                    thead
+                        tr
+                            th Company
+                            th Title
+                            th City
+                            th State
+                            th Country
+                            th Apply Date
+                            th Update Date
+                            th Status
+                            th Details
+                            th Update
+                            th Delete
+                    tbody
+                        each item in positions
+                            tr
+                                td #{item.name}
+                                td #{item.title}
+                                td #{item.place.city}
+                                td #{item.place.state}
+                                td #{item.place.country}
+                                td #{item.applyDate}
+                                td #{item.updateDate}
+                                td #{item.result}
+                                td: a.btn.btn-info.btn-sm(href="/dashboard/#{userId}/company/#{item._id}") Details
+                                td: a.btn.btn-warning.btn-sm Update
+                                td: a.btn.btn-danger.btn-sm Delete

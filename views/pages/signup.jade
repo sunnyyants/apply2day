@@ -1,0 +1,26 @@
+//
+   Created by Sunny on 8/7/14.
+extends ../layout
+block content
+    .container
+        .row
+            .col-sm-10.col-xs-10.col-md-8.col-lg-8.col-lg-offset-2.col-md-offset-2.col-sm-offset-2.col-xs-offset-1
+                .page-header
+                    h1 Sign Up
+        .row
+            .col-sm-10.col-xs-10.col-md-8.col-lg-8.col-lg-offset-2.col-md-offset-2.col-sm-offset-2.col-xs-offset-1
+                .well-sm
+                    div.alert.alert-dismissable.alert-danger(style="display: none")#warningBar #{message}
+                    if message.length > 0
+                        script
+                            $('#warningBar').show();
+                    form.form-horizontal(action="/signup",method="post")#signUpForm
+                        .form-group
+                            label Username
+                            input.form-control(type="text",name="username", placeholder="username")
+                        .form-group
+                            label Password
+                            input.form-control(type="password", name="password",placeholder="password")
+                        button.btn.btn-warning.btn-lg(type="submit")#signUpButton Sign Up
+
+                p.text-info Already have account? <a href='/login' class='text-success'>Sign In</a> now!

@@ -1,0 +1,34 @@
+//
+   Created by Sunny on 8/8/14.
+
+extends ../layout
+block content
+    .container
+        .row
+            .col-lg-12
+                .page-header
+                    h1 Dashboard
+                .navbar.navbar-default
+            form.form-horizontal#companyForm(action="/dashboard/#{user._id}/apply", method="post")
+                .form-group
+                    label Company Name
+                    input(type="text", name="Cname",placeholder="Company Name")
+                .form-group
+                    label Title
+                    input(type="text", name="Ctitle", placeholder="Title")
+                .form-group
+                    label City
+                    input(type="text", name="Ccity", placeholder="City")
+                .form-group
+                    label State
+                    select(name="Cstate", form="companyForm")#statesOption
+                .form-group
+                    label Country
+                    select(name="Ccountry", form="companyForm")
+                        option(value=USA) United states
+                .form-group
+                    label Requirement
+                    input(name="Crequirement", type="text")
+                button.btn.btn-lg.btn-primary(type="submit")
+
+    script(src="/javascripts/loadLocations.js")

@@ -1,0 +1,29 @@
+//
+   Created by Sunny on 8/8/14.
+
+extends ../layout
+block content
+    .container
+        .row
+            .col-md-6.col-lg-6
+                table.table.table-hover
+                    tr
+                        td Company
+                        td #{position.name}
+                    tr
+                        td Title
+                        td #{position.position.title}
+                    tr
+                        td Location
+                        td #{position.position.place.city}, #{position.position.place.state}, #{position.position.place.country}
+                    tr
+                        td Apply Time
+                        td #{position.position.applyDate}
+                    tr
+                        td Update Time
+                        td #{position.position.updateDate}
+                    tr
+                        td Status
+                        td #{position.position.result}
+            .col-md-6.col-lg-6
+                p #{position.position.requirement}

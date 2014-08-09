@@ -1,0 +1,28 @@
+//
+   Created by Sunny on 8/7/14.
+extends ../layout
+block content
+    .container
+        .page-header
+            h1
+                span Profile Page
+            a(href="/logout").btn.btn-lg.btn-success Logout
+            div
+                .row
+                    .col-sm-6
+                        .well
+                            h3 Local
+                                p
+                                    |id: #{user._id} </br>
+                                    |username: #{user.username} </br>
+                                    |password: #{user.password}
+                            a(href="/dashboard/#{user.id}/apply") jumptoApply
+                            a(href="/dashboard/#{user.id}/list") jumptoList
+
+
+
+
+
+
+
+
