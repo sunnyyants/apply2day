@@ -5,6 +5,7 @@ var User = require('../models/user');
 var passport = require('passport');
 var Company = require('../models/company');
 var mongoose = require('mongoose');
+var moment = require('moment');
 //var ObjectId = mongoose.Types.ObjectId;
 
 /* GET home page. */
@@ -121,12 +122,12 @@ router.get('/dashboard/:id/list', function(req, res){
     }
 });
 
-router.get('/dashboard/:uId/company/:cId',function(req, res){
-    var userId = mongoose.Types.ObjectId(req.params.uId);
-    var cId = mongoose.Types.ObjectId(req.params.cId);
+router.get('/dashboard/:userId/company/:companyId',function(req, res){
+    var userId = mongoose.Types.ObjectId(req.params.userId);
+    var companyId = mongoose.Types.ObjectId(req.params.companyId);
     var _position;
     if(userId){
-        User.aggregate([{$match:{_id:userId}},{$unwind:"$positions"},{$match:{'positions._id':cId}}],function(err,result){
+        User.aggregate([{$match:{_id:userId}},{$unwind:"$positions"},{$match:{'positions._id':companyId}}],function(err,result){
             if(err) throw err;
             _position = _.extend(result[0].positions);
             res.render('detail',{position:_position,userId:userId})
@@ -134,6 +135,28 @@ router.get('/dashboard/:uId/company/:cId',function(req, res){
     }
 });
 
+router.get("/dashboard/:uId/delete/:cId", function(req, res){
+    var userId = mongoose.Types.ObjectId(req.params.uId);
+    var cId = mongoose.Types.ObjectId(req.params.cId);
 
+    if(userId){
+        User.userDeleteCompany(userId,cId, function(err, result){{
+            if(err) throw err;
+            res.redirect('/dashboard/' + userId + "/list");
+        }})
+    }
+});
+
+router.get("/dashboard/:userId/update/:companyId/:newStatus", function(req,res){
+    var userId = mongoose.Types.ObjectId(req.params.userId);
+    var companyId = mongoose.Types.ObjectId(req.params.companyId);
+    var newStatus = req.params.newStatus;
+    if(userId){
+        User.userUpdateCompanyStatus(userId,companyId,newStatus, function(err, result){
+            if(err) throw err;
+            res.redirect('/dashboard/' + userId + "/list");
+        })
+    }
+});
 
 module.exports = router;

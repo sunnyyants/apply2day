@@ -4,6 +4,7 @@
 var mongoose = require('mongoose');
 var Company = require('../models/company');
 var bcrypt = require('bcrypt-nodejs');
+var moment = require('moment');
 
 var UserSchema = new mongoose.Schema({
     username:String,
@@ -27,11 +28,32 @@ UserSchema.methods.validPassword = function(password){
 
 
 UserSchema.statics = {
-  findById:function(id, callback){
-      return this.findOne({
-          _id:id
-      }).exec(callback)
-  }
+    findById:function(id, callback){
+        return this.findOne({
+            _id:id
+        }).exec(callback)
+    },
+    userDeleteCompany:function(userId, companyId, callback){
+        return this.update({
+            _id:userId
+        },{
+            $pull:{
+                positions:{
+                    _id:companyId
+                }
+            }
+        }).exec(callback)
+    },
+    userUpdateCompanyStatus:function(userId, companyId, newStatus, callback){
+        return this.update({
+            _id:userId, "positions._id":companyId
+        },{
+            $set:{
+                "positions.$.result": newStatus,
+                "positions.$.updateDate":Date.now()
+            }
+        }).exec(callback)
+    }
 };
 
 

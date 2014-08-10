@@ -3,6 +3,7 @@
  */
 
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 var CompanySchema = new mongoose.Schema({
     name:String,

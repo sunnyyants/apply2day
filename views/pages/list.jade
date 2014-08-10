@@ -34,5 +34,12 @@ block content
                                 td #{item.updateDate}
                                 td #{item.result}
                                 td: a.btn.btn-info.btn-sm(href="/dashboard/#{userId}/company/#{item._id}") Details
-                                td: a.btn.btn-warning.btn-sm Update
-                                td: a.btn.btn-danger.btn-sm Delete
+                                td: div.btn-group
+                                        button.btn.btn-warning.btn-sm.dropdown-toggle(type=button, data-toggle="dropdown") Update
+                                        ul.dropdown-menu
+                                            li: a.btn.btn-block.btn-warning(href="/dashboard/#{userId}/update/#{item._id}/Phoned") Phoned
+                                            li: a.btn.btn-block.btn-info(href="/dashboard/#{userId}/update/#{item._id}/Code-tested") Code-tested
+                                            li: a.btn.btn-block.btn-primary(href="/dashboard/#{userId}/update/#{item._id}/On-sited") On-sited
+                                            li: a.btn.btn-block.btn-danger(href="/dashboard/#{userId}/update/#{item._id}/Declined") Declined
+                                            li: a.btn.btn-block.btn-success(href="/dashboard/#{userId}/update/#{item._id}/Offered") Offered
+                                td: a.btn.btn-danger.btn-sm(href="/dashboard/#{userId}/delete/#{item._id}") Delete
