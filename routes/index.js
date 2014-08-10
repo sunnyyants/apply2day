@@ -4,6 +4,8 @@ var _ = require('underscore');
 var User = require('../models/user');
 var passport = require('passport');
 var Company = require('../models/company');
+var mongoose = require('mongoose');
+//var ObjectId = mongoose.Types.ObjectId;
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -94,7 +96,7 @@ router.post('/dashboard/:id/apply', function(req, res){
              newCompany.applyDate = Date.now();
              newCompany.updateDate = Date.now();
              newCompany.result = "Pending";
-             user.position.push(newCompany);
+             user.positions.push(newCompany);
              _user = _.extend(user);
              _user.save(function(err,u){
                  if(err){
@@ -113,26 +115,25 @@ router.get('/dashboard/:id/list', function(req, res){
         User.findById(id, function(err, user){
             if(err) throw err;
 
-            _positions = _.extend(user.position);
+            _positions = _.extend(user.positions);
             res.render('list',{userId:user._id, positions:_positions});
         })
     }
 });
 
 router.get('/dashboard/:uId/company/:cId',function(req, res){
-    var userId = req.params.uId;
-    var cId = req.params.cId;
+    var userId = mongoose.Types.ObjectId(req.params.uId);
+    var cId = mongoose.Types.ObjectId(req.params.cId);
     var _position;
     if(userId){
-        User.findCompanyById(userId, cId, function(err, position){
-            if(err){
-                throw err;
-            }
-            _position = _.extend(position);
-            res.render('detail',{position:_position});
-        })
+        User.aggregate([{$match:{_id:userId}},{$unwind:"$positions"},{$match:{'positions._id':cId}}],function(err,result){
+            if(err) throw err;
+            _position = _.extend(result[0].positions);
+            res.render('detail',{position:_position,userId:userId})
+        });
     }
 });
+
 
 
 module.exports = router;

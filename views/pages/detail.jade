@@ -12,18 +12,20 @@ block content
                         td #{position.name}
                     tr
                         td Title
-                        td #{position.position.title}
+                        td #{position.title}
                     tr
                         td Location
-                        td #{position.position.place.city}, #{position.position.place.state}, #{position.position.place.country}
+                        td #{position.place.city}, #{position.place.state}, #{position.place.country}
                     tr
                         td Apply Time
-                        td #{position.position.applyDate}
+                        td #{position.applyDate}
                     tr
                         td Update Time
-                        td #{position.position.updateDate}
+                        td #{position.updateDate}
                     tr
                         td Status
-                        td #{position.position.result}
+                        td #{position.result}
             .col-md-6.col-lg-6
-                p #{position.position.requirement}
+                p #{position.requirement}
+
+        a(href="../../#{userId}/list").btn.btn-lg.btn-primary back

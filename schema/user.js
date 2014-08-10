@@ -12,7 +12,7 @@ var UserSchema = new mongoose.Schema({
         type:Date,
         default:Date.now()
     },
-    position:{type:Array, default:[]}
+    positions:{type:Array, default:[]}
 },{collection:'User'});
 
 
@@ -27,39 +27,11 @@ UserSchema.methods.validPassword = function(password){
 
 
 UserSchema.statics = {
-  findByName:function(username, callback){
-    return this.findOne({
-        username:username
-    }).exec(callback)
-  },
   findById:function(id, callback){
       return this.findOne({
           _id:id
       }).exec(callback)
-  },
-  findCompanyById:function(userId,cId,callback){
-      return this.find({
-          _id:userId
-      },{
-          position:{
-              $elemMatch:{
-                  _id:cId
-              }
-          }
-      }).exec(callback)
-  },
-  findCompanyByName:function(userId,cName, callback){
-      return this.find({
-          _id:userId
-      },{
-          position:{
-              $elemMatch:{
-                  name:cName
-              }
-          }
-      }).exec(callback)
   }
-
 };
 
 
