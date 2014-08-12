@@ -56,8 +56,8 @@ UserSchema.statics = {
         },{
             $set:{
                 "positions.$.result": newStatus,
-                "positions.$.updateDate.$.date": new Date(Date.now()),
-                "positions.$.updateDate.$.dateString":moment().format('MMMM Do YYYY, h:mm:ss a')
+                "positions.$.updateDate.date": Date.now(),
+                "positions.$.updateDate.dateString":moment().format('MMMM Do YYYY, h:mm:ss a')
             }
         }).exec(callback)
     }
