@@ -146,7 +146,7 @@ router.get("/user/:uId/delete/:cId", function(req, res){
     var cId = mongoose.Types.ObjectId(req.params.cId);
 
     if(userId){
-        User.userDeleteCompany(userId,cId, function(err, result){{
+        User.userDeleteCompany(userId,cId, function(err){{
             if(err) throw err;
             res.redirect('/user/' + userId + "/list");
         }})
@@ -158,7 +158,7 @@ router.get("/user/:userId/update/:companyId/:newStatus", function(req,res){
     var companyId = mongoose.Types.ObjectId(req.params.companyId);
     var newStatus = req.params.newStatus;
     if(userId){
-        User.userUpdateCompanyStatus(userId,companyId,newStatus, function(err, result){
+        User.userUpdateCompanyStatus(userId,companyId,newStatus, function(err){
             if(err) throw err;
             res.redirect('/user/' + userId + "/list");
         })
