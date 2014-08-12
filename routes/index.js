@@ -38,25 +38,6 @@ router.get('/logout',function(req,res){
     res.redirect('/')
 });
 
-//router.post('/signup',function(req, res){
-//    var userObj = req.body;
-////    console.log(userObj.username);
-////    console.log(userObj.password);
-//    var user;
-//
-//    user = new User();
-//    user.username = userObj.username;
-//    user.password = user.generateHash(userObj.password);
-//    user.save(function(err){
-//        if(err){
-//            console.log(err);
-//            throw err;
-//        }
-////        console.log("Done saving!");
-//        res.send('"Done saving!"');
-//        done(null,'Done saving!');
-//    })
-//});
 
 router.get('/login', function(req, res) {
 
@@ -99,9 +80,6 @@ router.post('/user/:id/apply', function(req, res){
              newCompany.place.state = companyObj.Cstate;
              newCompany.place.country = companyObj.Ccountry;
              newCompany.requirement = companyObj.Crequirement;
-//             newCompany.applyDate.date = Date.now();
-//             newComp
-//             newCompany.updateDate.date = Date.now();
              newCompany.result = "Pending";
              user.positions.push(newCompany);
              _user = _.extend(user);
@@ -146,7 +124,7 @@ router.get("/user/:uId/delete/:cId", function(req, res){
     var cId = mongoose.Types.ObjectId(req.params.cId);
 
     if(userId){
-        User.userDeleteCompany(userId,cId, function(err){{
+        User.userDeleteCompany(userId,cId, function(err,result){{
             if(err) throw err;
             res.redirect('/user/' + userId + "/list");
         }})
@@ -158,7 +136,7 @@ router.get("/user/:userId/update/:companyId/:newStatus", function(req,res){
     var companyId = mongoose.Types.ObjectId(req.params.companyId);
     var newStatus = req.params.newStatus;
     if(userId){
-        User.userUpdateCompanyStatus(userId,companyId,newStatus, function(err){
+        User.userUpdateCompanyStatus(userId,companyId,newStatus, function(err,result){
             if(err) throw err;
             res.redirect('/user/' + userId + "/list");
         })
