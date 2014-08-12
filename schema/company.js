@@ -15,12 +15,25 @@ var CompanySchema = new mongoose.Schema({
     },
     requirement:String,
     applyDate:{
-        type:Date,
-        default:Date.now()
+        date:{
+            type:Date,
+            default:Date.now()
+        },
+        dateString:{
+            type:String,
+            default:moment().format('MMMM Do YYYY, h:mm:ss a')
+        }
+
     },
     updateDate:{
-        type:Date,
-        default:Date.now()
+        date:{
+            type:Date,
+            default:Date.now()
+        },
+        dateString:{
+            type:String,
+            default:moment().format('MMMM Do YYYY, h:mm:ss a')
+        }
     },
     result:String
 },{collection:"Company"});

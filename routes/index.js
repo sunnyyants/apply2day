@@ -94,8 +94,9 @@ router.post('/dashboard/:id/apply', function(req, res){
              newCompany.place.state = companyObj.Cstate;
              newCompany.place.country = companyObj.Ccountry;
              newCompany.requirement = companyObj.Crequirement;
-             newCompany.applyDate = Date.now();
-             newCompany.updateDate = Date.now();
+//             newCompany.applyDate.date = Date.now();
+//             newComp
+//             newCompany.updateDate.date = Date.now();
              newCompany.result = "Pending";
              user.positions.push(newCompany);
              _user = _.extend(user);

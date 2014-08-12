@@ -29,9 +29,9 @@ block content
                                 td #{item.title}
                                 td #{item.place.city}
                                 td #{item.place.state}
-                                td #{item.place.country}
-                                td #{item.applyDate}
-                                td #{item.updateDate}
+                                td.timeFormat #{item.place.country}
+                                td.timeFormat #{item.applyDate.dateString}
+                                td #{item.updateDate.dateString}
                                 td #{item.result}
                                 td: a.btn.btn-info.btn-sm(href="/dashboard/#{userId}/company/#{item._id}") Details
                                 td: div.btn-group
