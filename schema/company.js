@@ -21,7 +21,7 @@ var CompanySchema = new mongoose.Schema({
         },
         dateString:{
             type:String,
-            default:moment().format('MMMM Do YYYY, h:mm:ss a')
+            default:moment().format('MMM Do YY, h:mm:ss a')
         }
 
     },
@@ -32,7 +32,7 @@ var CompanySchema = new mongoose.Schema({
         },
         dateString:{
             type:String,
-            default:moment().format('MMMM Do YYYY, h:mm:ss a')
+            default:moment().format('MMM Do YY, h:mm:ss a')
         }
     },
     result:String

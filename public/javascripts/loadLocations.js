@@ -9,6 +9,6 @@ $(document).ready(function(){
             htmlText += (index +'>' + value);
             htmlText += ("</option>")
         });
-        $("#statesOption").html(htmlText);
-    })
+        $("#statesOptions").html(htmlText);
+    });
 });

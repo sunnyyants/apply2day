@@ -26,7 +26,12 @@ router.get('/movie/:id', function(req, res){
 });
 
 router.get('/profile',function(req,res){
-    res.render('profile', {user:req.user})
+    res.redirect('/user/' + req.user._id + "/dashboard");
+//    res.render('profile', {user:req.user})
+});
+
+router.get('/user/:id/dashboard',function(req,res){
+    res.render('profile',{user:req.user})
 });
 
 router.get('/logout',function(req,res){
@@ -72,16 +77,16 @@ router.get('/signup', function(req, res) {
 });
 
 router.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/profile', // redirect to the secure profile section
+    successRedirect : '/profile/', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
 }));
 
-router.get('/dashboard/:id/apply', function(req, res){
-    res.render('dashboard',{user:req.user})
+router.get('/user/:id/apply', function(req, res){
+    res.render('apply',{user:req.user})
 });
 
-router.post('/dashboard/:id/apply', function(req, res){
+router.post('/user/:id/apply', function(req, res){
     var id = req.params.id;
     var companyObj = req.body;
     var _user;
@@ -110,7 +115,7 @@ router.post('/dashboard/:id/apply', function(req, res){
     }
 });
 
-router.get('/dashboard/:id/list', function(req, res){
+router.get('/user/:id/list', function(req, res){
     var id = req.params.id;
     var _positions;
     if(id){
@@ -123,7 +128,7 @@ router.get('/dashboard/:id/list', function(req, res){
     }
 });
 
-router.get('/dashboard/:userId/company/:companyId',function(req, res){
+router.get('/user/:userId/company/:companyId',function(req, res){
     var userId = mongoose.Types.ObjectId(req.params.userId);
     var companyId = mongoose.Types.ObjectId(req.params.companyId);
     var _position;
@@ -136,26 +141,26 @@ router.get('/dashboard/:userId/company/:companyId',function(req, res){
     }
 });
 
-router.get("/dashboard/:uId/delete/:cId", function(req, res){
+router.get("/user/:uId/delete/:cId", function(req, res){
     var userId = mongoose.Types.ObjectId(req.params.uId);
     var cId = mongoose.Types.ObjectId(req.params.cId);
 
     if(userId){
         User.userDeleteCompany(userId,cId, function(err, result){{
             if(err) throw err;
-            res.redirect('/dashboard/' + userId + "/list");
+            res.redirect('/user/' + userId + "/list");
         }})
     }
 });
 
-router.get("/dashboard/:userId/update/:companyId/:newStatus", function(req,res){
+router.get("/user/:userId/update/:companyId/:newStatus", function(req,res){
     var userId = mongoose.Types.ObjectId(req.params.userId);
     var companyId = mongoose.Types.ObjectId(req.params.companyId);
     var newStatus = req.params.newStatus;
     if(userId){
         User.userUpdateCompanyStatus(userId,companyId,newStatus, function(err, result){
             if(err) throw err;
-            res.redirect('/dashboard/' + userId + "/list");
+            res.redirect('/user/' + userId + "/list");
         })
     }
 });

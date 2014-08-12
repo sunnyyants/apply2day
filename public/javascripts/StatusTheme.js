@@ -4,7 +4,6 @@
 $(document).ready(function(){
     var $status = $("#status");
     var $statusText = $status.text();
-    console.log($statusText);
     if($statusText === "Phoned"){
         $status.removeClass().addClass('text-warning');
     }else if($statusText === "Code-tested"){

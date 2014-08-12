@@ -5,6 +5,8 @@ extends ../layout
 block content
     .container
         .row
+            .page-header
+                h1 Company Detail
             .col-md-6.col-lg-6
                 table.table.table-hover
                     tr
@@ -18,14 +20,16 @@ block content
                         td #{position.place.city}, #{position.place.state}, #{position.place.country}
                     tr
                         td Apply Time
-                        td #{position.applyDate}
+                        td #{position.applyDate.dateString}
                     tr
                         td Update Time
-                        td #{position.updateDate}
+                        td #{position.updateDate.dateString}
                     tr
                         td Status
-                        td #{position.result}
+                        td#status #{position.result}
             .col-md-6.col-lg-6
+                legend Requirement
                 p #{position.requirement}
 
         a(href="../../#{userId}/list").btn.btn-lg.btn-primary back
+    script(src="/javascripts/StatusTheme.js")

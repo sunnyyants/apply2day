@@ -16,7 +16,7 @@ var UserSchema = new mongoose.Schema({
         },
         dateString:{
             type:String,
-            default:moment().format('MMMM Do YYYY, h:mm:ss a')
+            default:moment().format('MMM Do YY, h:mm:ss a')
         }
     },
     positions:{type:Array, default:[]}
@@ -57,7 +57,7 @@ UserSchema.statics = {
             $set:{
                 "positions.$.result": newStatus,
                 "positions.$.updateDate.date": Date.now(),
-                "positions.$.updateDate.dateString":moment().format('MMMM Do YYYY, h:mm:ss a')
+                "positions.$.updateDate.dateString":moment().format('MMM Do YY, h:mm:ss a')
             }
         }).exec(callback)
     }
