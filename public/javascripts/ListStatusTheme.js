@@ -4,7 +4,6 @@
 $(document).ready(function(){
     var $status = $("#status");
     var $statusText = $status.text();
-    var $statusBar = $('.statusBar');
     console.log($statusText);
     if($statusText === "Phoned"){
         $status.removeClass().addClass('text-warning');
@@ -18,6 +17,5 @@ $(document).ready(function(){
         $status.removeClass().addClass('text-success');
     }else{
         $status.removeClass();
-        $statusBar.removeClass();
     }
 });
