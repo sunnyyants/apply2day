@@ -143,4 +143,22 @@ router.get("/user/:userId/update/:companyId/:newStatus", function(req,res){
     }
 });
 
+router.post("/user/:userId/search", function(req, res){
+    var userId = mongoose.Types.ObjectId(req.params.userId);
+    var companyName = req.body.name;
+    var _positions = [];
+    if(userId){
+        User.aggregate([{$match:{_id:userId}},{$unwind:'$positions'},{$match:{'positions.name':companyName}}],function(err,results){
+            if(err) throw err;
+            for(var i = 0; i < results.length; i++){
+                if(results[i].hasOwnProperty("positions")){
+                    _positions.push(results[i].positions)
+                }
+            }
+            res.render('list',{userId:userId, positions:_positions});
+        })
+    }
+})
+
+
 module.exports = router;
