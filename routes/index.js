@@ -158,7 +158,22 @@ router.post("/user/:userId/search", function(req, res){
             res.render('list',{userId:userId, positions:_positions});
         })
     }
-})
+});
+
+router.get("/user/:userId/sort/appDate/:asc",function(req,res){
+    var userId = mongoose.Types.ObjectId(req.params.userId);
+    var asc = parseInt(req.params.asc);
+    var _positions;
+    if(userId){
+        User.aggregate([{$unwind:'$positions'},{$sort:{"positions.applyDate.date":asc}},{$group:{_id:"$_id", positions:{$push:'$positions'}}}], function(err, results){
+            if(err) throw err;
+            console.log(results);
+            _positions = _.extend(results[0].positions);
+            console.log(_positions);
+            res.render('list',{userId:userId, positions:_positions});
+        })
+    }
+});
 
 
 module.exports = router;

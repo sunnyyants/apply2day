@@ -17,4 +17,11 @@ $(document).ready(function(){
     }else{
         $status.removeClass();
     }
+
+    $("#searchAppUpdate").on('click', function(){
+        var order = $(this).data('search-order');
+        var userId = $(this).data('user-id');
+        $.redirect("/user/" + userId + "/sort/appDate/" + order);
+        $(this).data('search-order',-order);
+    })
 });
