@@ -16,8 +16,8 @@ block content
                             th City
                             th State
                             th Country
-                            th: a(data-search-order="1", data-user-id="#{userId}")#searchAppUpdate Apply Date
-                            th Update Date
+                            th: a(href="/user/#{userId}/sort/appDate/#{order}") Apply Date
+                            th: a(href="/user/#{userId}/sort/updateDate/#{order}") Update Date
                             th Status
                             th Details
                             th Update
@@ -45,4 +45,5 @@ block content
                                 td: a.btn.btn-danger.btn-sm(href="/user/#{userId}/delete/#{item._id}") Delete
 
             a.btn.btn-lg.btn-primary(href="/user/#{userId}/apply") Back
+
     script(src="/javascripts/StatusTheme.js")

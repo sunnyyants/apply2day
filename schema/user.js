@@ -50,13 +50,13 @@ UserSchema.statics = {
             }
         }).exec(callback)
     },
-    userUpdateCompanyStatus:function(userId, companyId, newStatus, callback){
+    userUpdateCompanyStatus:function(userId, companyId, newStatus, newDate, callback){
         return this.update({
             _id:userId, "positions._id":companyId
         },{
             $set:{
                 "positions.$.result": newStatus,
-                "positions.$.updateDate.date": Date.now(),
+                "positions.$.updateDate.date": newDate,
                 "positions.$.updateDate.dateString":moment().format('MMM Do YY, h:mm:ss a')
             }
         }).exec(callback)

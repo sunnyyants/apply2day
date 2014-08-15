@@ -13,17 +13,6 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/admin/movie',function(req,res){
-    res.render('admin',{title:'I am an admin!'})
-});
-
-router.get('/admin/list',function(req,res){
-    res.render('list',{title:'List'})
-});
-
-router.get('/movie/:id', function(req, res){
-    res.render('details', {title:'Details'})
-});
 
 router.get('/profile',function(req,res){
     res.redirect('/user/' + req.user._id + "/dashboard");
@@ -101,7 +90,7 @@ router.get('/user/:id/list', function(req, res){
             if(err) throw err;
 
             _positions = _.extend(user.positions);
-            res.render('list',{userId:user._id, positions:_positions});
+            res.render('list',{userId:user._id, positions:_positions,order:1});
         })
     }
 });
@@ -135,8 +124,9 @@ router.get("/user/:userId/update/:companyId/:newStatus", function(req,res){
     var userId = mongoose.Types.ObjectId(req.params.userId);
     var companyId = mongoose.Types.ObjectId(req.params.companyId);
     var newStatus = req.params.newStatus;
+    var newDate = new Date();
     if(userId){
-        User.userUpdateCompanyStatus(userId,companyId,newStatus, function(err,result){
+        User.userUpdateCompanyStatus(userId,companyId,newStatus, newDate, function(err,result){
             if(err) throw err;
             res.redirect('/user/' + userId + "/list");
         })
@@ -152,25 +142,41 @@ router.post("/user/:userId/search", function(req, res){
             if(err) throw err;
             for(var i = 0; i < results.length; i++){
                 if(results[i].hasOwnProperty("positions")){
-                    _positions.push(results[i].positions)
+                    _positions.push(results[i].positions);
+                    console.log(typeof results[i].positions.updateDate.date)
                 }
             }
-            res.render('list',{userId:userId, positions:_positions});
+            res.render('list',{userId:userId, positions:_positions,order:1});
         })
     }
 });
 
-router.get("/user/:userId/sort/appDate/:asc",function(req,res){
+router.get("/user/:userId/sort/appDate/:order",function(req,res){
     var userId = mongoose.Types.ObjectId(req.params.userId);
-    var asc = parseInt(req.params.asc);
+    var order = parseInt(req.params.order);
     var _positions;
     if(userId){
-        User.aggregate([{$unwind:'$positions'},{$sort:{"positions.applyDate.date":asc}},{$group:{_id:"$_id", positions:{$push:'$positions'}}}], function(err, results){
+        User.aggregate([{$unwind:'$positions'},{$sort:{"positions.applyDate.date":order}},{$group:{_id:"$_id", positions:{$push:'$positions'}}}], function(err, results){
             if(err) throw err;
             console.log(results);
             _positions = _.extend(results[0].positions);
             console.log(_positions);
-            res.render('list',{userId:userId, positions:_positions});
+            res.render('list',{userId:userId, positions:_positions,order:-order});
+        })
+    }
+});
+
+router.get("/user/:userId/sort/updateDate/:order",function(req,res){
+    var userId = mongoose.Types.ObjectId(req.params.userId);
+    var order = parseInt(req.params.order);
+    var _positions;
+    if(userId){
+        User.aggregate([{$unwind:'$positions'},{$sort:{"positions.updateDate.date":order}},{$group:{_id:"$_id", positions:{$push:'$positions'}}}], function(err, results){
+            if(err) throw err;
+            console.log(results);
+            _positions = _.extend(results[0].positions);
+            console.log(_positions);
+            res.render('list',{userId:userId, positions:_positions,order:-order});
         })
     }
 });
