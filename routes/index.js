@@ -6,7 +6,7 @@ var passport = require('passport');
 var Company = require('../models/company');
 var mongoose = require('mongoose');
 var moment = require('moment');
-//var ObjectId = mongoose.Types.ObjectId;
+var async = require('async');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -53,7 +53,39 @@ router.post('/signup', passport.authenticate('local-signup', {
 }));
 
 router.get('/user/:id/apply', function(req, res){
-    res.render('apply',{user:req.user})
+    var id = mongoose.Types.ObjectId(req.params.id);
+    var total,daily,weekly,monthly;
+    if(id){
+        async.parallel([
+            function(cb){
+                User.userCountTotalApplications(id,function(err,result){
+                    total = result.length == 0 ? 0 : _.extend(result[0].total);
+                    cb(null, total);
+                });
+            },
+            function(cb){
+                User.userCountDailyApplications(id,function(err,result){
+                    daily = result.length == 0 ? 0 : _.extend(result[0].total);
+                    cb(null, daily);
+                });
+            },
+            function(cb){
+                User.userCountWeeklyApplications(id,function(err,result){
+                    weekly = result.length == 0 ? 0 : _.extend(result[0].total);
+                    cb(null, weekly);
+                });
+            },
+            function(cb){
+                User.userCountMonthlyApplications(id,function(err,result){
+                    monthly = result.length == 0 ? 0 : _.extend(result[0].total);
+                    cb(null, monthly);
+                })
+            }
+        ],function(err,results){
+            console.log(results[0],results[1]);
+            res.render('apply',{user:req.user,total:results[0],daily:results[1],weekly:results[2], monthly:results[3]})
+        });
+    }
 });
 
 router.post('/user/:id/apply', function(req, res){
@@ -69,14 +101,18 @@ router.post('/user/:id/apply', function(req, res){
              newCompany.place.state = companyObj.Cstate;
              newCompany.place.country = companyObj.Ccountry;
              newCompany.requirement = companyObj.Crequirement;
+             newCompany.applyDate.date = Date.now();
+             newCompany.applyDate.dateString = moment().format('MMM Do YY, h:mm:ss a');
+             newCompany.updateDate.date = Date.now();
+             newCompany.updateDate.dateString = moment().format('MMM Do YY, h:mm:ss a');
              newCompany.result = "Pending";
              user.positions.push(newCompany);
              _user = _.extend(user);
-             _user.save(function(err,u){
+             _user.save(function(err,user){
                  if(err){
                      throw err
                  }
-                 res.render('profile',{user:u});
+                 res.render('profile',{user:user});
              })
          })
     }

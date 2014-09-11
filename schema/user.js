@@ -32,12 +32,11 @@ UserSchema.methods.validPassword = function(password){
 };
 
 
-
 UserSchema.statics = {
     findById:function(id, callback){
         return this.findOne({
             _id:id
-        }).exec(callback)
+        }).exec(callback);
     },
     userDeleteCompany:function(userId, companyId, callback){
         return this.update({
@@ -48,7 +47,7 @@ UserSchema.statics = {
                     _id:companyId
                 }
             }
-        }).exec(callback)
+        }).exec(callback);
     },
     userUpdateCompanyStatus:function(userId, companyId, newStatus, newDate, callback){
         return this.update({
@@ -60,9 +59,30 @@ UserSchema.statics = {
                 "positions.$.updateDate.dateString":moment().format('MMM Do YY, h:mm:ss a')
             }
         }).exec(callback)
+    },
+    userCountTotalApplications:function(userId, callback){
+        return this.aggregate([{$match:{'_id':userId}},{$unwind:'$positions'},{$group:{"_id":null,"total":{$sum:1}}}]).exec(callback);
+    },
+    userCountDailyApplications:function(userId,callback){
+        var date = new Date();
+        var today = new Date([date.getFullYear(),date.getMonth()+1,date.getDate()]);
+        var tomorrow = new Date([date.getFullYear(),date.getMonth()+1,date.getDate()+1]);
+        return this.aggregate([{$unwind:'$positions'},{$match:{_id:userId,'positions.applyDate.date':{$gte:today,$lt:tomorrow}}},{$group:{_id:null,total:{$sum:1}}}]).exec(callback);
+    },
+    userCountMonthlyApplications:function(userId,callback){
+        var date = new Date();
+        var thisMonth = new Date([date.getFullYear(),date.getMonth()+1]);
+        var nextMonth = new Date([date.getFullYear(),date.getMonth()+2]);
+        return this.aggregate([{$unwind:'$positions'},{$match:{_id:userId,'positions.applyDate.date':{$gte:thisMonth,$lt:nextMonth}}},{$group:{_id:null,total:{$sum:1}}}]).exec(callback);
+    },
+    userCountWeeklyApplications:function(userId, callback){
+        var temp = new Date();
+        var today = new Date([temp.getFullYear(),temp.getMonth()+1,temp.getDate()]);
+        var day = today.getDay();
+        var thisWeek = new Date(today.getTime()-((day-1) * 24 * 60 * 60 * 1000));
+        var nextWeek = new Date((today.getTime()+(8-day) * 24 * 60 * 60 * 1000));
+        return this.aggregate([{$unwind:'$positions'},{$match:{_id:userId,'positions.applyDate.date':{$gte:thisWeek,$lt:nextWeek}}},{$group:{_id:null,total:{$sum:1}}}]).exec(callback);
     }
 };
-
-
 
 module.exports = UserSchema;

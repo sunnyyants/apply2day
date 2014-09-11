@@ -9,12 +9,28 @@ block content
                 .page-header
                     h1 Apply today!
             .col-lg-4
-                legend Pick One
-                a(href="/user/#{user._id}").btn.btn-block.btn-primary My Profile
-                a(href="/user/#{user._id}/list").btn.btn-block.btn-warning Check List
-                form(action="/user/#{user._id}/search", method="post")
-                    input(type="text", name="name").form-control.col-lg-8
-                    button.btn.btn-default.col-lg-4(type="submit") Search
+                .col-lg-12
+                    legend Statics
+                    ul.nav.nav-pills
+                        li
+                            a(href='#') Daily
+                                span.badge #{daily}
+                        li
+                            a(href='#') Weekly
+                                span.badge #{weekly}
+                        li.active
+                            a(href='#') Monthly
+                                span.badge #{monthly}
+                        li.active
+                            a(href='#') Total
+                                span.badge #{total}
+                .col-lg-12
+                    legend Pick One
+                    a(href="/user/#{user._id}").btn.btn-block.btn-primary My Profile
+                    a(href="/user/#{user._id}/list").btn.btn-block.btn-warning Check List
+                    form(action="/user/#{user._id}/search", method="post")
+                        input(type="text", name="name").form-control.col-lg-8
+                        button.btn.btn-default.col-lg-4(type="submit") Search
 
 
             .col-lg-8
