@@ -26,12 +26,15 @@ block content
                                 span.badge #{total}
                 .col-lg-12
                     legend Pick One
-                    a(href="/user/#{user._id}").btn.btn-block.btn-primary My Profile
+                    .form-group
+                        form(action="/user/#{user._id}/search", method="post")
+                            .input-group
+                                span.input-group-addon Q
+                                input(type="text", name="name").form-control
+                                span.input-group-btn
+                                    button.btn.btn-default(type="submit") Search
+                    a(href="/user/#{user._id}/dashboard").btn.btn-block.btn-primary My Profile
                     a(href="/user/#{user._id}/list").btn.btn-block.btn-warning Check List
-                    form(action="/user/#{user._id}/search", method="post")
-                        input(type="text", name="name").form-control.col-lg-8
-                        button.btn.btn-default.col-lg-4(type="submit") Search
-
 
             .col-lg-8
                 legend Company Informations
