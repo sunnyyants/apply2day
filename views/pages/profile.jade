@@ -14,6 +14,12 @@ block content
                             |username: #{user.username} </br>
             .col-sm-6
                 .well
+                    .form-group
+                        form(action="/user/#{user._id}/search", method="post")
+                            .input-group
+                                input(type="text", name="name").form-control
+                                span.input-group-btn
+                                    button.btn.btn-danger(type="submit") Search
                     a.btn.btn-block.btn-info(href="/user/#{user.id}/apply") Apply Today!
                     a.btn.btn-block.btn-warning(href="/user/#{user.id}/list") Check Applied List
         a(href="/logout").btn.btn-lg.btn-success Logout
