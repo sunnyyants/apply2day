@@ -24,7 +24,7 @@ block content
                             th Delete
                     tbody
                         each item in positions
-                            tr
+                            tr#list
                                 td #{item.name}
                                 td #{item.title}
                                 td #{item.place.city}
@@ -32,7 +32,7 @@ block content
                                 td #{item.place.country}
                                 td #{item.applyDate.dateString}
                                 td #{item.updateDate.dateString}
-                                td#status #{item.result}
+                                td #{item.result}
                                 td: a.btn.btn-info.btn-sm(href="/user/#{userId}/company/#{item._id}") Details
                                 td: div.btn-group
                                         button.btn.btn-warning.btn-sm.dropdown-toggle(type=button, data-toggle="dropdown") Update
@@ -45,5 +45,4 @@ block content
                                 td: a.btn.btn-danger.btn-sm(href="/user/#{userId}/delete/#{item._id}") Delete
 
             a.btn.btn-lg.btn-primary(href="/user/#{userId}/apply") Back
-
     script(src="/javascripts/ListStatusTheme.js")

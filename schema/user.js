@@ -31,7 +31,7 @@ UserSchema.methods.validPassword = function(password){
     return bcrypt.compareSync(password, this.password)
 };
 
-
+    
 UserSchema.statics = {
     findById:function(id, callback){
         return this.findOne({
