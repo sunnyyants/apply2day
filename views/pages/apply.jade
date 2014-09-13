@@ -27,18 +27,18 @@ block content
                 .col-lg-12
                     legend Pick One
                     .form-group
-                        form(action="/user/#{user._id}/search", method="post")
+                        form(action="/user/#{userId}/search", method="post")
                             .input-group
                                 span.input-group-addon Q
                                 input(type="text", name="name").form-control
                                 span.input-group-btn
                                     button.btn.btn-default(type="submit") Search
-                    a(href="/user/#{user._id}/dashboard").btn.btn-block.btn-primary My Profile
-                    a(href="/user/#{user._id}/list").btn.btn-block.btn-warning Check List
+                    a(href="/user/#{userId}/dashboard").btn.btn-block.btn-primary My Profile
+                    a(href="/user/#{userId}/list").btn.btn-block.btn-warning Check List
 
             .col-lg-8
                 legend Company Informations
-                form.form-horizontal.well-lg#companyForm(action="/user/#{user._id}/apply", method="post")
+                form.form-horizontal.well-lg#companyForm(action="/user/#{userId}/apply", method="post")
                     .form-group
                         label.col-lg-2.control-label Name
                         .col-lg-10

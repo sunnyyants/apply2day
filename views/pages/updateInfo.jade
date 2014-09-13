@@ -1,0 +1,52 @@
+//
+   Created by Sunny on 8/8/14.
+extends ../layout
+block content
+    .container
+        .row
+            .page-header
+                h1 Update Information
+            .col-md-6.col-lg-6
+                legend Company Detail
+                table.table.table-hover
+                    tr
+                        td Company
+                        td #{position.name}
+                    tr
+                        td Title
+                        td #{position.title}
+                    tr
+                        td Location
+                        td #{position.place.city}, #{position.place.state}, #{position.place.country}
+                    tr
+                        td Apply Time
+                        td #{position.applyDate.dateString}
+                    tr
+                        td Update Time
+                        td #{position.updateDate.dateString}
+                    tr
+                        td Status
+                        td#status #{position.result}
+                legend Requirement
+                p #{position.requirement}
+            .col-md-6.col-lg-6
+                legend New Company Informations
+                form.form-horizontal.well-lg#companyForm(action="/user/#{userId}/updateInfo/#{companyId}", method="post")
+                    .form-group
+                        label.col-lg-2.control-label Name
+                        .col-lg-10
+                            input.col-lg-12(type="text", name="Cname",placeholder="Company Name")
+                    .form-group
+                        label.col-lg-2.control-label Title
+                        .col-lg-10
+                            input.col-lg-12(type="text", name="Ctitle", placeholder="Title")
+                    .form-group
+                        label.col-lg-2.control-label City
+                        .col-lg-10
+                            input.col-lg-12(type="text", name="Ccity", placeholder="City")
+                    .form-group
+                        label.col-lg-2.control-label Requirement
+                        .col-lg-10
+                            textarea.form-control(name="Crequirement", row="5", type="text" form=companyForm)
+                    button.btn.btn-lg.btn-primary(type="submit") Submit
+                    a.btn.btn-lg.btn-warning(href="/user/#{userId}/dashboard/")

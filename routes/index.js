@@ -10,7 +10,7 @@ var async = require('async');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
+    res.render('index', { title: 'Express' });
 });
 
 
@@ -83,7 +83,7 @@ router.get('/user/:id/apply', function(req, res){
             }
         ],function(err,results){
             console.log(results[0],results[1]);
-            res.render('apply',{user:req.user,total:results[0],daily:results[1],weekly:results[2], monthly:results[3]})
+            res.render('apply',{userId:id,total:results[0],daily:results[1],weekly:results[2], monthly:results[3]})
         });
     }
 });
@@ -93,28 +93,28 @@ router.post('/user/:id/apply', function(req, res){
     var companyObj = req.body;
     var _user;
     if(id){
-         User.findById(id,function(err, user){
-             var newCompany = new Company();
-             newCompany.name = companyObj.Cname;
-             newCompany.title = companyObj.Ctitle;
-             newCompany.place.city = companyObj.Ccity;
-             newCompany.place.state = companyObj.Cstate;
-             newCompany.place.country = companyObj.Ccountry;
-             newCompany.requirement = companyObj.Crequirement;
-             newCompany.applyDate.date = Date.now();
-             newCompany.applyDate.dateString = moment().format('MMM Do YY, h:mm:ss a');
-             newCompany.updateDate.date = Date.now();
-             newCompany.updateDate.dateString = moment().format('MMM Do YY, h:mm:ss a');
-             newCompany.result = "Pending";
-             user.positions.push(newCompany);
-             _user = _.extend(user);
-             _user.save(function(err,user){
-                 if(err){
-                     throw err
-                 }
-                 res.render('profile',{user:user});
-             })
-         })
+        User.findById(id,function(err, user){
+            var newCompany = new Company();
+            newCompany.name = companyObj.Cname;
+            newCompany.title = companyObj.Ctitle;
+            newCompany.place.city = companyObj.Ccity;
+            newCompany.place.state = companyObj.Cstate;
+            newCompany.place.country = companyObj.Ccountry;
+            newCompany.requirement = companyObj.Crequirement;
+            newCompany.applyDate.date = Date.now();
+            newCompany.applyDate.dateString = moment().format('MMM Do YY, h:mm:ss a');
+            newCompany.updateDate.date = Date.now();
+            newCompany.updateDate.dateString = moment().format('MMM Do YY, h:mm:ss a');
+            newCompany.result = "Pending";
+            user.positions.push(newCompany);
+            _user = _.extend(user);
+            _user.save(function(err,user){
+                if(err){
+                    throw err
+                }
+                res.render('profile',{user:user});
+            })
+        })
     }
 });
 
@@ -139,7 +139,7 @@ router.get('/user/:userId/company/:companyId',function(req, res){
         User.aggregate([{$match:{_id:userId}},{$unwind:"$positions"},{$match:{'positions._id':companyId}}],function(err,result){
             if(err) throw err;
             _position = _.extend(result[0].positions);
-            res.render('detail',{position:_position,userId:userId})
+            res.render('detail',{position:_position,userId:userId,companyId:companyId})
         });
     }
 });
@@ -217,5 +217,35 @@ router.get("/user/:userId/sort/updateDate/:order",function(req,res){
     }
 });
 
+router.get('/user/:userId/updateInfo/:companyId', function(req,res){
+    var userId = mongoose.Types.ObjectId(req.params.userId);
+    var companyId = mongoose.Types.ObjectId(req.params.companyId);
+    var _position;
+    if(userId){
+        User.aggregate([{$match:{_id:userId}},{$unwind:"$positions"},{$match:{'positions._id':companyId}}],function(err,result){
+            if(err) throw err;
+            _position = _.extend(result[0].positions);
+            res.render('updateInfo',{position:_position,userId:userId,companyId:companyId})
+        });
+    }
+});
 
+router.post('/user/:userId/updateInfo/:companyId', function(req,res){
+    var companyObj = req.body;
+    var userId = mongoose.Types.ObjectId(req.params.userId);
+    var companyId = mongoose.Types.ObjectId(req.params.companyId);
+    if(companyObj.Cname !== ''){
+        User.userUpdateCompanyName(userId, companyId, companyObj.Cname);
+    }
+    if(companyObj.Ctitle !== ''){
+        User.userUpdateCompanyLocation(userId, companyId, companyObj.Ctitle);
+    }
+    if(companyObj.Ccity !== ''){
+        User.userUpdateCompanyPosition(userId, companyId, companyObj.Ccity);
+    }
+    if(companyObj.Crequirement !== ''){
+        User.userUpdatePositionRequirement(userId, companyId, companyObj.Crequirement);
+    }
+    res.redirect('/user/' + userId + '/company/' + companyId);
+});
 module.exports = router;

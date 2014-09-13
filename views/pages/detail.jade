@@ -27,9 +27,10 @@ block content
                     tr
                         td Status
                         td#status #{position.result}
+                a(href="../../#{userId}/list").btn.btn-block.btn-primary back
+                a(href="/user/#{userId}/updateInfo/#{companyId}").btn.btn-block.btn-primary Update Information
             .col-md-6.col-lg-6
                 legend Requirement
                 p #{position.requirement}
 
-        a(href="../../#{userId}/list").btn.btn-lg.btn-primary back
     script(src="/javascripts/ListStatusTheme.js")

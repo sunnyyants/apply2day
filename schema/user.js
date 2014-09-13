@@ -31,7 +31,7 @@ UserSchema.methods.validPassword = function(password){
     return bcrypt.compareSync(password, this.password)
 };
 
-    
+
 UserSchema.statics = {
     findById:function(id, callback){
         return this.findOne({
@@ -82,6 +82,42 @@ UserSchema.statics = {
         var thisWeek = new Date(today.getTime()-((day-1) * 24 * 60 * 60 * 1000));
         var nextWeek = new Date((today.getTime()+(8-day) * 24 * 60 * 60 * 1000));
         return this.aggregate([{$unwind:'$positions'},{$match:{_id:userId,'positions.applyDate.date':{$gte:thisWeek,$lt:nextWeek}}},{$group:{_id:null,total:{$sum:1}}}]).exec(callback);
+    },
+    userUpdateCompanyName:function(userId, companyId, newName, callback){
+        return this.update({
+            _id:userId, "positions._id":companyId
+        },{
+            $set:{
+                "positions.$.name": newName
+            }
+        }).exec(callback)
+    },
+    userUpdateCompanyLocation:function(userId, companyId, newLocation, callback){
+        return this.update({
+            _id:userId, "positions._id":companyId
+        },{
+            $set:{
+                "positions.$.place.city": newLocation
+            }
+        }).exec(callback)
+    },
+    userUpdateCompanyPosition:function(userId, companyId, newPosition, callback){
+        return this.update({
+            _id:userId, "positions._id":companyId
+        },{
+            $set:{
+                "positions.$.title": newPosition
+            }
+        }).exec(callback)
+    },
+    userUpdatePositionRequirement:function(userId, companyId, newRequirement, callback){
+        return this.update({
+            _id:userId, "positions._id":companyId
+        },{
+            $set:{
+                "positions.$.requirement": newRequirement
+            }
+        }).exec(callback)
     }
 };
 
