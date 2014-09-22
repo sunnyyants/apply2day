@@ -16,7 +16,6 @@ router.get('/', function(req, res) {
 
 router.get('/profile',function(req,res){
     res.redirect('/user/' + req.user._id + "/dashboard");
-//    res.render('profile', {user:req.user})
 });
 
 router.get('/user/:id/dashboard',function(req,res){
