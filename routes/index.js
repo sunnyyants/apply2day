@@ -82,7 +82,6 @@ router.get('/user/:id/apply', function(req, res){
                 })
             }
         ],function(err,results){
-            console.log(results[0],results[1]);
             res.render('apply',{userId:id,total:results[0],daily:results[1],weekly:results[2], monthly:results[3]})
         });
     }
@@ -179,7 +178,6 @@ router.post("/user/:userId/search", function(req, res){
             for(var i = 0; i < results.length; i++){
                 if(results[i].hasOwnProperty("positions")){
                     _positions.push(results[i].positions);
-                    console.log(typeof results[i].positions.updateDate.date)
                 }
             }
             res.render('list',{userId:userId, positions:_positions,order:1});
@@ -194,9 +192,7 @@ router.get("/user/:userId/sort/appDate/:order",function(req,res){
     if(userId){
         User.aggregate([{$unwind:'$positions'},{$sort:{"positions.applyDate.date":order}},{$group:{_id:"$_id", positions:{$push:'$positions'}}}], function(err, results){
             if(err) throw err;
-            console.log(results);
             _positions = _.extend(results[0].positions);
-            console.log(_positions);
             res.render('list',{userId:userId, positions:_positions,order:-order});
         })
     }
@@ -209,9 +205,7 @@ router.get("/user/:userId/sort/updateDate/:order",function(req,res){
     if(userId){
         User.aggregate([{$unwind:'$positions'},{$sort:{"positions.updateDate.date":order}},{$group:{_id:"$_id", positions:{$push:'$positions'}}}], function(err, results){
             if(err) throw err;
-            console.log(results);
             _positions = _.extend(results[0].positions);
-            console.log(_positions);
             res.render('list',{userId:userId, positions:_positions,order:-order});
         })
     }

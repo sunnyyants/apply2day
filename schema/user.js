@@ -78,7 +78,7 @@ UserSchema.statics = {
     userCountWeeklyApplications:function(userId, callback){
         var temp = new Date();
         var today = new Date([temp.getFullYear(),temp.getMonth()+1,temp.getDate()]);
-        var day = today.getDay();
+        var day = today.getDay() == 0 ? 7 : today.getDay();
         var thisWeek = new Date(today.getTime()-((day-1) * 24 * 60 * 60 * 1000));
         var nextWeek = new Date((today.getTime()+(8-day) * 24 * 60 * 60 * 1000));
         return this.aggregate([{$unwind:'$positions'},{$match:{_id:userId,'positions.applyDate.date':{$gte:thisWeek,$lt:nextWeek}}},{$group:{_id:null,total:{$sum:1}}}]).exec(callback);
